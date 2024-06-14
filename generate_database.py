@@ -4,6 +4,15 @@ from modos_vida import modos_vida
 from datetime import datetime
 
 
+def must_consider_ocurrence_row(ocurrence):
+    ocurrence = ocurrence.strip()
+
+    if len(ocurrence) <= 0:
+        ocurrence = "0"
+
+    return ocurrence != "0"
+
+
 def append_ocurrence(cursor, row, specie):
     # Isso poderia ser feito via ORM - Model/Entity ? sim
     # Isso DEVERIA ser feito via ORM - Model/Entity ? NÃO
@@ -52,7 +61,7 @@ def main():
     for row in dt_src:
         for _, plantas in modos_vida.items():
             for planta in plantas:
-                if planta in row and row[planta]:
+                if planta in row and must_consider_ocurrence_row(row[planta]):
                     append_ocurrence(cursor, row, planta)
 
     conn.commit()
